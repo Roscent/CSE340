@@ -1,10 +1,13 @@
 <%#The Content Heading %>
     <% if (title) { %>
-        <h1>
-            <%= title %>
-        </h1>
-        <% } else { res.redirect('/') } %>
+    <h1><%= title %></h1>
+    <% } else { 
+        res.redirect('/') 
+    } %>
 
-            <%# messages() %>
-
-                <%- detailHtml %>
+    <% if(Object.entries(htmlData).length> 0){ %>
+    
+        <%- htmlData %>
+        <% } else { %>
+            <p class="notice">Sorry, no matching vehicle could be found.</p>
+        <% } %>
