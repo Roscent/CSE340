@@ -1,8 +1,8 @@
-<!-- views/errors/error.ejs -->
-<% if (title) { %>
-    <h1>
-        <%= title %>
+<%= title %>
     </h1>
-    <% } else { res.redirect('/') } %>
 
-        <%- message %>
+    <p>
+        <%= message %>
+    </p>
+
+    <%- nav %>

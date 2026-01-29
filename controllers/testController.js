@@ -1,9 +1,10 @@
 const express = require("express")
 const router = express.Router()
-const testController = require("../controllers/testController")
 const utilities = require("../utilities/")
 
 // Route to trigger intentional 500 error
-router.get("/", utilities.handleErrors(testController.generateError))
+router.get("/error", utilities.handleErrors(async(req, res) => {
+  throw new Error("Intentional 500 Server Error for Testing")
+}))
 
 module.exports = router

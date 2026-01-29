@@ -1,13 +1,25 @@
-<%#The Content Heading %>
-    <% if (title) { %>
-    <h1><%= title %></h1>
-    <% } else { 
-        res.redirect('/') 
-    } %>
+<%- include('../layouts/header') %>
 
-    <% if(Object.entries(htmlData).length> 0){ %>
-    
-        <%- htmlData %>
-        <% } else { %>
-            <p class="notice">Sorry, no matching vehicle could be found.</p>
-        <% } %>
+    <div class="container">
+        <h1>
+            <%= title %>
+        </h1>
+
+        <% if (messages && messages.notice) { %>
+            <div class="alert alert-info">
+                <%= messages.notice %>
+            </div>
+            <% } %>
+
+                <% if (messages && messages.error) { %>
+                    <div class="alert alert-danger">
+                        <%= messages.error %>
+                    </div>
+                    <% } %>
+
+                        <div class="vehicle-detail-container">
+                            <%- detailHtml %>
+                        </div>
+    </div>
+
+    <%- include('../layouts/footer') %>
