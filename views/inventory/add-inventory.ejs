@@ -1,11 +1,12 @@
 <% layout('layouts/layout') %>
 
-    <div class="inventory-container">
+    <div class="account-container">
         <h1>
             <%= title %>
         </h1>
 
-        <% if (messages.notice) { %>
+        <!-- Flash Messages -->
+        <% if (messages && messages.notice) { %>
             <div class="notice bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4"
                 role="alert">
                 <p>
@@ -14,9 +15,10 @@
             </div>
             <% } %>
 
-                <% if (errors && errors.array) { %>
+                <!-- Validation Errors -->
+                <% if (errors && errors.length> 0) { %>
                     <ul class="notice bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-                        <% errors.array().forEach(error=> { %>
+                        <% errors.forEach(error=> { %>
                             <li>
                                 <%= error.msg %>
                             </li>
@@ -24,82 +26,170 @@
                     </ul>
                     <% } %>
 
+                        <!-- Form -->
                         <form action="/inv/add-inventory" method="post" class="space-y-6">
 
+                            <!-- Classification -->
                             <div class="form-group">
-                                <label for="classificationList"
-                                    class="block text-gray-700 font-semibold mb-2">Classification</label>
+                                <label for="classificationList" class="block text-gray-700 font-semibold mb-2">
+                                    Classification
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <%- classificationList %>
                             </div>
 
+                            <!-- Make -->
                             <div class="form-group">
-                                <label for="inv_make" class="block text-gray-700 font-semibold mb-2">Make</label>
+                                <label for="inv_make" class="block text-gray-700 font-semibold mb-2">
+                                    Make
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="text" id="inv_make" name="inv_make" required minlength="3"
+                                    placeholder="Enter vehicle make (e.g., Toyota, Ford, BMW)"
                                     value="<%= typeof inv_make !== 'undefined' ? inv_make : '' %>"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Minimum 3 characters
+                                </p>
                             </div>
 
+                            <!-- Model -->
                             <div class="form-group">
-                                <label for="inv_model" class="block text-gray-700 font-semibold mb-2">Model</label>
+                                <label for="inv_model" class="block text-gray-700 font-semibold mb-2">
+                                    Model
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="text" id="inv_model" name="inv_model" required minlength="3"
+                                    placeholder="Enter vehicle model (e.g., Camry, F-150, 3 Series)"
                                     value="<%= typeof inv_model !== 'undefined' ? inv_model : '' %>"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Minimum 3 characters
+                                </p>
                             </div>
 
+                            <!-- Year -->
                             <div class="form-group">
-                                <label for="inv_year" class="block text-gray-700 font-semibold mb-2">Year</label>
+                                <label for="inv_year" class="block text-gray-700 font-semibold mb-2">
+                                    Year
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="number" id="inv_year" name="inv_year" required min="1900"
-                                    max="<%= new Date().getFullYear() + 1 %>"
+                                    max="<%= new Date().getFullYear() + 1 %>" placeholder="Enter vehicle year"
                                     value="<%= typeof inv_year !== 'undefined' ? inv_year : '' %>"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Must be between 1900 and <%= new Date().getFullYear() + 1 %>
+                                </p>
                             </div>
 
+                            <!-- Description -->
                             <div class="form-group">
-                                <label for="inv_description"
-                                    class="block text-gray-700 font-semibold mb-2">Description</label>
+                                <label for="inv_description" class="block text-gray-700 font-semibold mb-2">
+                                    Description
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <textarea id="inv_description" name="inv_description" required rows="4"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"><%= typeof inv_description !== 'undefined' ? inv_description : '' %></textarea>
+                                    placeholder="Enter vehicle description"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"><%= typeof inv_description !== 'undefined' ? inv_description : '' %></textarea>
                             </div>
 
+                            <!-- Image Path -->
                             <div class="form-group">
-                                <label for="inv_image" class="block text-gray-700 font-semibold mb-2">Image Path</label>
+                                <label for="inv_image" class="block text-gray-700 font-semibold mb-2">
+                                    Image Path
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="text" id="inv_image" name="inv_image" required
+                                    placeholder="Enter image path"
                                     value="<%= typeof inv_image !== 'undefined' ? inv_image : '/images/vehicles/no-image.png' %>"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Default: /images/vehicles/no-image.png
+                                </p>
                             </div>
 
+                            <!-- Thumbnail Path -->
                             <div class="form-group">
-                                <label for="inv_thumbnail" class="block text-gray-700 font-semibold mb-2">Thumbnail
-                                    Path</label>
+                                <label for="inv_thumbnail" class="block text-gray-700 font-semibold mb-2">
+                                    Thumbnail Path
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="text" id="inv_thumbnail" name="inv_thumbnail" required
+                                    placeholder="Enter thumbnail path"
                                     value="<%= typeof inv_thumbnail !== 'undefined' ? inv_thumbnail : '/images/vehicles/no-image-tn.png' %>"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Default: /images/vehicles/no-image-tn.png
+                                </p>
                             </div>
 
+                            <!-- Price -->
                             <div class="form-group">
-                                <label for="inv_price" class="block text-gray-700 font-semibold mb-2">Price</label>
+                                <label for="inv_price" class="block text-gray-700 font-semibold mb-2">
+                                    Price
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="number" id="inv_price" name="inv_price" required min="0.01" step="0.01"
+                                    placeholder="Enter vehicle price"
                                     value="<%= typeof inv_price !== 'undefined' ? inv_price : '' %>"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Minimum: $0.01
+                                </p>
                             </div>
 
+                            <!-- Miles -->
                             <div class="form-group">
-                                <label for="inv_miles" class="block text-gray-700 font-semibold mb-2">Miles</label>
+                                <label for="inv_miles" class="block text-gray-700 font-semibold mb-2">
+                                    Miles
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="number" id="inv_miles" name="inv_miles" required min="0"
+                                    placeholder="Enter vehicle mileage"
                                     value="<%= typeof inv_miles !== 'undefined' ? inv_miles : '' %>"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Minimum: 0 miles
+                                </p>
                             </div>
 
+                            <!-- Color -->
                             <div class="form-group">
-                                <label for="inv_color" class="block text-gray-700 font-semibold mb-2">Color</label>
+                                <label for="inv_color" class="block text-gray-700 font-semibold mb-2">
+                                    Color
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="text" id="inv_color" name="inv_color" required
+                                    placeholder="Enter vehicle color"
                                     value="<%= typeof inv_color !== 'undefined' ? inv_color : '' %>"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
                             </div>
 
-                            <button type="submit"
-                                class="submit-button w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md">
-                                Add Inventory Item
-                            </button>
+                            <!-- Buttons -->
+                            <div class="flex space-x-4">
+                                <button type="submit"
+                                    class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-md hover:shadow-lg">
+                                    Add Inventory Item
+                                </button>
+                                <a href="/inv/"
+                                    class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-4 rounded-lg transition duration-200 text-center">
+                                    Cancel
+                                </a>
+                            </div>
+
                         </form>
+
+                        <!-- Back to Management -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <a href="/inv/"
+                                class="text-blue-600 hover:text-blue-800 font-medium underline transition duration-200 inline-flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                </svg>
+                                Back to Vehicle Management
+                            </a>
+                        </div>
     </div>

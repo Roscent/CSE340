@@ -108,9 +108,7 @@ validate.inventoryRules = () => {
  * Check data for new inventory and return errors or continue
  * ***************************** */
 validate.checkNewInventory = async (req, res, next) => {
-    const { 
-        classification_id 
-    } = req.body
+    const { classification_id } = req.body
     
     let errors = validationResult(req)
     if (!errors.isEmpty()) {

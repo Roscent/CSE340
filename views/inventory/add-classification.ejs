@@ -1,0 +1,87 @@
+<% layout('layouts/layout') %>
+
+    <div class="account-container">
+        <h1>
+            <%= title %>
+        </h1>
+
+        <!-- Flash Messages -->
+        <% if (messages && messages.notice) { %>
+            <div class="notice bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4"
+                role="alert">
+                <p>
+                    <%= messages.notice %>
+                </p>
+            </div>
+            <% } %>
+
+                <!-- Validation Errors -->
+                <% if (errors && errors.length> 0) { %>
+                    <ul class="notice bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
+                        <% errors.forEach(error=> { %>
+                            <li>
+                                <%= error.msg %>
+                            </li>
+                            <% }) %>
+                    </ul>
+                    <% } %>
+
+                        <!-- Form -->
+                        <form action="/inv/add-classification" method="post" class="space-y-6">
+
+                            <!-- Instruction -->
+                            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                                <div class="flex">
+                                    <div class="ml-3">
+                                        <p class="text-sm text-yellow-700 font-semibold">
+                                            <strong>Important:</strong> Classification name must not contain spaces or
+                                            special characters.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Classification Name Input -->
+                            <div class="form-group">
+                                <label for="classificationName" class="block text-gray-700 font-semibold mb-2">
+                                    Classification Name
+                                    <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" id="classificationName" name="classification_name" required
+                                    placeholder="Enter classification name (e.g., SUV, Sedan, Truck)"
+                                    pattern="^[a-zA-Z0-9]+$"
+                                    title="Only letters and numbers are allowed (no spaces or special characters)."
+                                    value="<%= typeof classification_name !== 'undefined' ? classification_name : '' %>"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200">
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Example: "SUV", "Truck", "SportsCar" (no spaces, no special characters)
+                                </p>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="flex space-x-4">
+                                <button type="submit"
+                                    class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-md hover:shadow-lg">
+                                    Add Classification
+                                </button>
+                                <a href="/inv/"
+                                    class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-4 rounded-lg transition duration-200 text-center">
+                                    Cancel
+                                </a>
+                            </div>
+
+                        </form>
+
+                        <!-- Back to Management -->
+                        <div class="mt-8 pt-6 border-t border-gray-200">
+                            <a href="/inv/"
+                                class="text-blue-600 hover:text-blue-800 font-medium underline transition duration-200 inline-flex items-center">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                </svg>
+                                Back to Vehicle Management
+                            </a>
+                        </div>
+    </div>

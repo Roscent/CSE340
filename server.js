@@ -16,6 +16,7 @@ const pool = require('./database/')
 const baseController = require("./controllers/baseController")
 const testController = require("./controllers/testController");
 const inventoryRoute = require("./routes/inventoryRoute");
+const accountRoute = require("./routes/accountRoute");
 const utilities = require("./utilities/index");
 
 const app = express();
@@ -39,7 +40,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // Express Messages Middleware
-app.use(require('connect-flash')())
+app.use(flash())
 app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
@@ -68,8 +69,11 @@ app.get("/", utilities.handleErrors(baseController.buildHome));
 // Inventory routes
 app.use("/inv", inventoryRoute);
 
+// Account routes
+app.use("/account", accountRoute);
+
 // Test Error Route
-app.get("/test/error", utilities.handleErrors(testController.generateError));
+app.use("/test", testController);
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
