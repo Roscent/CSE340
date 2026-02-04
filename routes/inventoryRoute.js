@@ -2,28 +2,25 @@
 const express = require("express")
 const router = new express.Router() 
 const invController = require("../controllers/invController")
-const utilities = require("../utilities/index")
-const invValidate = require('../utilities/inventory-validation')
+const utilities = require("../utilities")
 
-// Route to build inventory by classification view
-router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId));
+router.get("/type/:classificationId", invController.buildByClassificationId);
 
-// Route to build inventory detail view
-router.get("/detail/:invId", utilities.handleErrors(invController.buildByInventoryId));
 
-// Route to build inventory management view (site-name/inv/)
-router.get("/", utilities.handleErrors(invController.buildManagement))
+/* ****************************************
+ * Route to build vehicle detail view
+ **************************************** */
+router.get("/detail/:id", 
+utilities.handleErrors(invController.buildDetail))
 
-// Route to build add classification view
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification))
+/* ****************************************
+ * Error Route
+ * Assignment 3, Task 3
+ **************************************** */
+router.get(
+  "/broken",
+  utilities.handleErrors(invController.throwError)
+)
 
-// Route to process new classification data
-router.post("/add-classification", invValidate.classificationRules(), invValidate.checkNewClassification, utilities.handleErrors(invController.addClassification))
-
-// Route to build add inventory view
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory))
-
-// Route to process new inventory data
-router.post("/add-inventory", invValidate.inventoryRules(), invValidate.checkNewInventory, utilities.handleErrors(invController.addInventory))
 
 module.exports = router;

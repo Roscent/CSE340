@@ -1,25 +1,15 @@
-<%- include('../layouts/header') %>
-
-    <div class="container">
+<%# Unit 3, Assignment 3, Task 1 %>
+    <% if (title) { %>
         <h1>
             <%= title %>
         </h1>
+        <% } else { res.redirect('/') } %>
 
-        <% if (messages && messages.notice) { %>
-            <div class="alert alert-info">
-                <%= messages.notice %>
-            </div>
-            <% } %>
 
-                <% if (messages && messages.error) { %>
-                    <div class="alert alert-danger">
-                        <%= messages.error %>
-                    </div>
-                    <% } %>
 
-                        <div class="vehicle-detail-container">
-                            <%- detailHtml %>
-                        </div>
-    </div>
+            <% if(Object.entries(htmlData).length> 0){ %>
 
-    <%- include('../layouts/footer') %>
+                <%- htmlData %>
+                    <% } else { %>
+                        <p class="notice">Sorry, no matching vehicle could be found.</p>
+                        <% } %>
