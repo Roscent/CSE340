@@ -1,39 +1,124 @@
-/* styles.css */
-@import url("https://fonts.googleapis.com/css2?family=Inter&family=Literata:opsz@7..72&display=swap");
+/************************************************
+CSS Styles for CSE Motors
 
-/******* Change Box Model ***************/
+1. General styles
+   1.0 @imports
+   1.1 Box Model
+   1.2 Universal Styles
+   1.3 Header
+   1.4 Navigation
+   1.5 Body
+   1.6 Footer
+2. Component styles
+    2.1 Hero - Home view
+    2.2 Review - Home view
+    2.3 Add-ons - Home view
+    2.4 Forms
+    2.5 Vehicles - Classification view
+    2.6 Vehicle - Detail view
+3. Media Query
+    3.1 General
+    3.2 Header
+    3.3 Navigation
+    3.4 Hero - Home
+    3.5 Review & Add-on - Home
+    3.6 Vehicles - Classification view
+    3.7 Vehicle - Detail view
+
+************************************************/
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Literata:opsz@7..72&display=swap');
+
+/******* 1.1 Change Box Model ***************/
+/*#region*/
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
 
+/*#endregion*/
+/******* 1.2 Universal Styles ***************/
+/*#region*/
+
+/* Colors */
 :root {
+  --primary-text: #242333;
   --primary-background: #fff;
   --main-accent: #01b0d3;
-  --body-font: Inter;
-  --primary-text: #242333;
-  /* Added for header.ejs */
-  --heading-font: Literata;
-  /* Added for main content area (index.ejs) */
+  --notification: rgb(255, 0, 17);
   --valid: rgb(173, 243, 173);
   --invalid: rgb(240, 200, 207);
+  --body-font: Inter;
+  --heading-font: Literata;
+  --success-background: rgb(173, 243, 173);
+  --warning-background: rgb(240, 200, 207);
+  --notice-background: yellow;
 }
 
-body {
-  font-family: var(--body-font), sans-serif;
-  margin: 0;
+img {
+  max-width: 100%;
 }
 
-#wrapper {
-  width: 95%;
-  background-color: var(--primary-background);
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 1em;
+h1,
+h2 {
+  font-size: 1.2em;
+  font-family: var(--heading-font), serif;
 }
 
-/* BEGIN header.ejs styles */
+#err {
+  margin-left: 1em;
+  list-style: none;
+}
+
+.message {
+  font-weight: bold;
+  list-style: none;
+  font-style: italic;
+  padding: 1rem;
+  color: var(--primary-text);
+}
+
+.success {
+  background-color: var(--success-background);
+}
+
+.warning {
+  background-color: var(--warning-background);
+}
+
+.notice {
+  background-color: var(--notice-background);
+}
+
+label,
+input,
+textarea,
+select {
+  display: block;
+}
+
+textarea {
+  width: min(60ch, 100%);
+  min-height: 6rem;
+}
+
+input,
+select {
+  font-size: 1.25rem;
+
+}
+
+input[type='Submit'] {
+  font-size: larger;
+  background-color: var(--main-accent);
+  margin: .5rem 0 1rem 0;
+}
+
+/*#endregion*/
+/************************************************
+   1.3 Header
+************************************************/
+/*#region*/
 #top-header {
   display: flex;
   justify-content: space-between;
@@ -50,6 +135,8 @@ body {
   display: flex;
   width: 20%;
   justify-content: space-evenly;
+
+
 }
 
 header>img {
@@ -63,9 +150,15 @@ header a {
   padding: 2vh 0;
 }
 
-/* END header.ejs styles */
+#cookie {
+  align-self: center;
+}
 
-/* BEGIN navigation.ejs style */
+/*#endregion*/
+/************************************************
+   1.4 Navigation
+************************************************/
+/*#region*/
 nav {
   background-color: var(--primary-text);
   color: var(--primary-background);
@@ -91,9 +184,44 @@ nav a {
   padding-bottom: 1em;
 }
 
-/* END navigation.ejs style */
+/*#endregion*/
+/************************************************
+   1.5 body
+************************************************/
+/*#region*/
+body {
+  /* font-family: 'Share Tech Mono', sans-serif; */
+  font-family: var(--body-font), sans-serif;
+  margin: 0;
+}
 
-/* BEGIN footer.ejs style */
+#wrapper {
+  width: 95%;
+  background-color: var(--primary-background);
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1em;
+}
+
+.crash {
+  background-color: rgb(248, 224, 228);
+  min-height: 400px;
+  padding: 1rem;
+  background-image: url("../images/site/wreck.jpg");
+  background-position: center;
+  background-size: cover;
+  background-blend-mode: soft-light;
+  font-weight: 700;
+  font-size: x-large;
+}
+
+
+
+/*#endregion*/
+/************************************************
+   1.6 Footer
+************************************************/
+/*#region*/
 footer {
   margin-top: 2rem;
 }
@@ -101,7 +229,7 @@ footer {
 footer p {
   margin: 0;
   padding: 0;
-  font-size: 0.9rem;
+  font-size: .9rem;
 }
 
 hr {
@@ -109,19 +237,15 @@ hr {
   margin: 0;
 }
 
-/* END footer.ejs style */
+/*#endregion*/
+/************************************************
+   2. Component Styles
+***********************************************/
 
-/* BEGIN index.ejs styles */
-img {
-  max-width: 100%;
-}
-
-h1,
-h2 {
-  font-size: 1.2em;
-  font-family: var(--heading-font), serif;
-}
-
+/************************************************
+   2.1 Hero section - home view
+************************************************/
+/*#region*/
 #hero {
   background-image: url("/images/vehicles/delorean.jpg");
   background-repeat: no-repeat;
@@ -137,12 +261,13 @@ h2 {
 }
 
 #hero a:hover {
-  opacity: 0.5;
+  opacity: .5;
 }
 
 #hero li {
   list-style: none;
   color: var(--main-accent);
+
 }
 
 #hero li h2 {
@@ -155,28 +280,28 @@ h2 {
   padding-left: 0;
   margin-top: 0;
   max-width: 200px;
-  margin-left: 0.5em;
+  margin-left: .5em;
   margin-bottom: 2rem;
   background-color: rgba(255, 255, 255, 0.7);
 }
 
 #hero li {
-  font-size: 0.85em;
+  font-size: .85em;
 }
 
 #actionbtn {
   display: inline-block;
   max-width: 25vw;
   max-height: 10vh;
-  padding: 0.5rem;
+  padding: .5rem;
   background-color: var(--main-accent);
   color: var(--primary-text);
   font-weight: 800;
-  border-radius: 0.25rem;
+  border-radius: .25rem;
 }
 
 #actionbtn:hover {
-  opacity: 0.5;
+  opacity: .5;
 }
 
 /* For Delorian list */
@@ -184,17 +309,31 @@ section ul {
   padding: 0 0 0 1rem;
 }
 
+/*#endregion*/
+
+/************************************************
+   2.2 Review section - home view
+************************************************/
+/*#region*/
 #review li {
-  font-size: 0.9em;
+  font-size: .9em;
   margin-bottom: 1em;
 }
 
+
+
+/*#endregion*/
+/************************************************
+   2.3 Add-on section - home view
+************************************************/
+/*#region*/
 .flex {
   display: flex;
   margin-bottom: 2em;
   justify-content: center;
   width: 100%;
-  padding-left: 0.25em;
+  padding-left: .25em;
+
 }
 
 .flex a {
@@ -215,23 +354,206 @@ a figure {
 figure img {
   display: block;
   margin: auto;
-  padding-top: 0.5em;
+  padding-top: .5em;
 }
 
 figure figcaption {
   text-align: center;
 }
 
+
+
 section {
   margin-bottom: 2em;
   margin-top: 1em;
 }
 
-/* END index.ejs styles */
 
+
+/*#endregion*/
+
+/************************************************
+   2.4 Forms 
+************************************************/
+/*#region*/
+label+div {
+  font-size: .7rem;
+  margin-left: .5rem;
+}
+
+input[name$='Image'],
+input[name$='Thumbnail'] {
+  width: 40ch;
+  max-width: 100%;
+}
+
+*[required]:focus:invalid {
+  background-color: var(--invalid);
+}
+
+*[required]:focus:valid {
+  background-color: var(--valid);
+  color: var(--primary-text);
+}
+
+#pswdBtn {
+  width: 9rem;
+  height: 40px;
+  padding: .75rem;
+  border: 1px solid var(--primary-text);
+  background-color: var(--primary-text);
+  color: #fff;
+  border-radius: 3px;
+}
+
+#loginContainer {
+  max-width: 25rem;
+  margin: 0 auto;
+  padding: 1rem .5rem;
+  background-color: var(--main-accent);
+  font-size: larger;
+  border-radius: .5rem;
+}
+
+#loginContainer p {
+  text-align: center;
+
+}
+
+#loginContainer a {
+  font-weight: 700;
+  color: var(--primary-text);
+}
+
+#registerContainer {
+  max-width: 30rem;
+  margin: 0 auto;
+  padding: 1rem .5rem;
+  background-color: var(--main-accent);
+  font-size: larger;
+  border-radius: .5rem;
+}
+
+#registerContainer p {
+  font-style: italic;
+  font-variant: small-caps;
+}
+
+#registerContainer button {
+  font-size: larger;
+  margin-top: 1rem;
+}
+
+#pswdBtn {
+  width: 12rem;
+  height: 40px;
+  padding: .5rem;
+  border: 1px solid #3a3a3a;
+  background-color: #3a3a3a;
+  color: #fff;
+  border-radius: 20px;
+}
+
+:is(fieldset) input,
+:is(fieldset) div,
+:is(fieldset) span,
+:is(fieldset) textarea,
+:is(fieldset) select {
+  margin-bottom: .75rem;
+}
+
+/*#endregion*/
+
+/************************************************
+   2.5 Vehicles grid - classification view
+************************************************/
+/*#region*/
+#inv-display {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+#inv-display li {
+  margin-bottom: .5em;
+  border: 1px #ccc solid;
+  list-style-type: none;
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+#inv-display li img {
+  object-fit: fill;
+}
+
+/*#endregion*/
+
+/************************************************
+   2.6 Vehicle  - detail view
+************************************************/
+/*#region*/
+#detail {
+  display: flex;
+  align-items: start;
+  position: relative;
+  flex-direction: column;
+}
+
+#vehicle-display img {
+  max-width: 100%;
+}
+
+#vehicle-display ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#vehicle-display li {
+  margin: 0;
+  padding: 1rem;
+}
+
+#vehicle-display h4 {
+  display: inline-block;
+  font-size: large;
+  margin: 0;
+  font-weight: 800;
+}
+
+#vehicle-display li:nth-child(odd) {
+  background-color: #f5f5f5;
+}
+
+/*#endregion*/
+
+/************************************************
+   2.7 Misc 
+************************************************/
+/*#region*/
+.boldList>li {
+  font-size: larger;
+  margin-bottom: .5rem;
+  list-style: none;
+}
+
+#inventoryDisplay {
+  margin: 1rem 0;
+  font-size: large;
+}
+
+
+/*#endregion*/
 @media only screen and (min-width: 768px) {
+
+  /*******************************************
+     3.1 General
+    *******************************************/
+  /*#region*/
   body {
-    background-image: linear-gradient(45deg, #000 25%, transparent 25%),
+    background-image:
+      linear-gradient(45deg, #000 25%, transparent 25%),
       linear-gradient(45deg, transparent 75%, #000 75%),
       linear-gradient(45deg, transparent 75%, #000 75%),
       linear-gradient(45deg, #000 25%, #fff 25%);
@@ -248,21 +570,38 @@ section {
     max-width: 1200px;
   }
 
-  /* BEGIN header.ejs styles */
+  h1 {
+    font-size: 1.9em;
+    grid-row: 1 / 1;
+    grid-column: 1 / 3;
+  }
+
+  /*#endregion*/
+  /*******************************************
+     3.2 Header
+    *******************************************/
+  /*#region*/
+
   #tools {
     font-size: inherit;
   }
 
-  /* END header.ejs styles */
+  .acc:hover {
+    opacity: .5;
+  }
 
-  /* BEGIN navigation.ejs styles */
+  /*#endregion*/
+  /*******************************************
+     3.3 Navigation
+    ********************************************/
+  /*#region*/
   nav {
-    margin-top: 0.75rem;
+    margin-top: .75rem;
   }
 
   nav ul {
     justify-content: space-evenly;
-    padding: 0.5rem 0;
+    padding: .5rem 0;
     margin: 0;
   }
 
@@ -284,179 +623,123 @@ section {
     background-color: var(--primary-background);
   }
 
-  /* END navigation.ejs styles */
-}
-
-/* 🚗 Main container for account views (Login/Register) */
-.account-container {
-  max-width: 400px;
-  /* Set a comfortable width for forms */
-  margin: 40px auto;
-  /* Center the container with vertical space */
-  padding: 30px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  /* Subtle depth */
-}
-
-/* 🎯 Header Styling for h1 */
-.account-container h1 {
-  text-align: center;
-  color: #1f2937;
-  /* Dark Gray */
-  margin-bottom: 25px;
-  font-size: 2em;
-  font-weight: 700;
-}
-
-/* 🔔 Error/Flash Message Container */
-.flash-messages {
-  /* Uses utility classes like bg-red-100, text-red-700, px-4, py-3, rounded, mb-4 */
-  font-size: 0.95em;
-}
-
-/* 📝 Styles for form itself (e.g., used by #loginForm, #registrationForm) */
-form {
-  padding: 0;
-}
-
-/* 🏷️ Label Styling */
-.form-group label {
-  font-weight: 600;
-  /* Bolder text for visibility */
-  color: #374151;
-  /* Slightly darker than default gray */
-  margin-bottom: 8px;
-  display: block;
-  /* Ensures label takes full width */
-}
-
-/* 🛑 Input Focus Effect */
-/* Compliments the existing border and focus utility classes */
-.form-group input {
-  border: 1px solid #d1d5db;
-  /* Gray-300 */
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.form-group input:focus {
-  border-color: #3b82f6;
-  /* Blue-500 */
-  outline: none;
-  box-shadow: 0 0 0 1px #3b82f6;
-  /* Subtle blue outline on focus */
-}
-
-/* 🔑 Password Requirements Note (for register.ejs) */
-.form-group .text-sm {
-  color: #6b7280;
-  margin-top: 5px;
-  font-weight: normal;
-}
-
-/* 👆 Submit Button Styling */
-/* Complements existing classes like bg-blue-600 */
-.submit-button {
-  font-size: 1.1em;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-}
-
-.submit-button:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* 🔗 Registration/Login Link Area */
-.registration-link {
-  margin-top: 25px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
-  /* Light border separator */
-  text-align: center;
-}
-
-.registration-link p {
-  margin-bottom: 5px;
-}
-
-.registration-link a {
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.registration-link a:hover {
-  text-decoration: underline;
-}
-
-/* Optional: Password Toggle Button (if implemented in register.ejs) */
-#togglePassword {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin-left: 5px;
-  font-size: 0.9em;
-}
-
-/* Inventory Detail Styles */
-#inv-detail-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  margin: 2rem 0;
-}
-
-.inv-image-col {
-  flex: 1;
-  min-width: 300px;
-}
-
-.inv-details-col {
-  flex: 1;
-  min-width: 300px;
-}
-
-.detail-img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.price-display {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #2c3e50;
-  margin: 1rem 0;
-}
-
-.inv-details-list {
-  list-style: none;
-  padding: 0;
-}
-
-.inv-details-list li {
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #eee;
-}
-
-.inv-details-list li strong {
-  display: inline-block;
-  width: 120px;
-  color: #555;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  #inv-detail-wrapper {
-    flex-direction: column;
+  /*#endregion*/
+  /*******************************************
+     3.4 Hero - Home
+    *******************************************/
+  /*#region*/
+  #hero ul {
+    font-size: 1.6em;
+    margin-left: 2em;
+    margin-top: 1em;
   }
 
-  .inv-details-list li strong {
-    width: 100px;
+  #actionbtn {
+    display: block;
+    width: 90%;
+    margin-top: 1.5em;
+    padding: 1rem;
+    background-color: var(--main-accent);
+    color: var(--primary-text);
+    font-weight: 800;
+    font-size: large;
   }
+
+  /*#endregion*/
+  /*******************************************
+     3.5 Review & Add-on - Home   
+   *******************************************/
+  /*#region*/
+  .flex-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 1vw;
+  }
+
+  #add-ons,
+  #review {
+    margin-top: 0;
+    flex: 1 0 45%;
+  }
+
+  #review h2,
+  #add-ons h2 {
+    font-size: 1.4em;
+    margin-bottom: 2em;
+  }
+
+  #add-ons {
+    order: -1;
+  }
+
+  #review li {
+    font-size: 1.1em;
+  }
+
+  #add-ons {
+    width: 45%;
+  }
+
+  /*#endregion*/
+  /*******************************************
+     3.6 Vehicles grid - Classification view   
+     *******************************************/
+  /*#region*/
+  #inv-display {
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+  }
+
+  #inv-display h2 {
+    font-size: 1rem;
+  }
+
+  #inv-display li {
+    max-width: 200px;
+    flex: 1 0 auto;
+    text-align: center;
+    height: 250px;
+    display: grid;
+    border-radius: 10px;
+  }
+
+  #inv-display a {
+    height: 150px;
+  }
+
+  #inv-display img {
+    border-radius: 10px 10px;
+  }
+
+  #inv-display div {
+    width: 100%;
+    height: 100px;
+  }
+
+  /*#endregion*/
+  /*******************************************
+     3.7 Detail layout - Vehicle Detail view  
+    *******************************************/
+  /*#region*/
+
+
+  #detail #vehicle-display {
+    margin: 0 0 1rem;
+  }
+
+  #vehicle-display>div {
+    display: flex;
+  }
+
+  .imagePrice {
+    flex: 1 0 45%;
+    margin-right: 1rem;
+  }
+
+  #vehicle-display #mainImage {
+    width: auto;
+    object-fit: contain;
+  }
+
+  /*#endregion*/
 }

@@ -3,7 +3,7 @@ const express = require("express")
 const router = new express.Router() 
 const invController = require("../controllers/invController")
 const utilities = require("../utilities")
-const validate = require("../utilities/inventory-validation")
+const invChecks = require("../utilities/inventory-validation")
 
 router.get("/type/:classificationId", invController.buildByClassificationId);
 
@@ -15,44 +15,32 @@ router.get("/detail/:id", utilities.handleErrors(invController.buildDetail))
 
 /* ****************************************
  * Error Route
- * Assignment 3, Task 3
  **************************************** */
 router.get("/broken", utilities.handleErrors(invController.throwError))
 
 /* ****************************************
- * Management Routes
- * Assignment 4, Task 1, 2, 3
+ * Build Management View Route utilities.checkAccountType
  **************************************** */
+router.get("/",utilities.handleErrors(invController.buildManagementView))
 
-// Route to build management view
-router.get("/", 
-  utilities.handleErrors(invController.buildManagement)
-)
+/* ****************************************
+ * Build add-classification View Route utilities.checkAccountType
+ **************************************** */
+router.get("/newClassification", utilities.handleErrors(invController.newClassificationView))
 
-// Route to build add classification view
-router.get("/add-classification", 
-  utilities.handleErrors(invController.buildAddClassification)
-)
+/* ****************************************
+ * Process add-classification Route utilities.checkAccountType
+ **************************************** */
+router.post("/addClassification", invChecks.classificationRule(), invChecks.checkClassificationData, utilities.handleErrors(invController.addClassification))
 
-// Route to process new classification
-router.post(
-  "/add-classification",
-  validate.classificationRules(),
-  validate.checkNewClassification,
-  utilities.handleErrors(invController.addClassification)
-)
+/* ****************************************
+ * Build add-vehicle View Route utilities.checkAccountType
+ **************************************** */
+router.get("/newVehicle",utilities.handleErrors(invController.newInventoryView))
 
-// Route to build add inventory view
-router.get("/add-inventory", 
-  utilities.handleErrors(invController.buildAddInventory)
-)
-
-// Route to process new inventory
-router.post(
-  "/add-inventory",
-  validate.inventoryRules(),
-  validate.checkNewInventory,
-  utilities.handleErrors(invController.addInventory)
-)
+/* ****************************************
+ * Process add-vehicle Route utilities.checkAccountType
+ **************************************** */
+router.post("/addInventory", invChecks.newInventoryRules(), invChecks.checkInventoryData, utilities.handleErrors(invController.addInventory))
 
 module.exports = router;

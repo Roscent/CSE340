@@ -1,47 +1,18 @@
-<% layout('layouts/layout') %>
+<% if (title) {%>
+<h1><%= title %></h1>
+<%} else {res.redirect('/')} %>
 
-    <div class="account-container">
-        <h1>
-            <%= title %>
-        </h1>
+<%- messages() %>
 
-        <!-- Flash Messages -->
-        <% if (messages && messages.notice) { %>
-            <div class="notice bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-4"
-                role="alert">
-                <p>
-                    <%= messages.notice %>
-                </p>
-            </div>
-            <% } %>
+<% if (errors) { %>
+<ul class="message warning">
+    <% errors.array().forEach(error=> { %>
+    <li><%= error.msg %></li>
+    <% }) %>
+</ul>
+<% } %>
 
-                <!-- Management Links -->
-                <div class="management-links space-y-6 mt-8">
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                        <h2 class="text-xl font-bold text-gray-800 mb-3">Classification Management</h2>
-                        <p class="text-gray-600 mb-4">Add new vehicle classifications to organize your inventory.</p>
-                        <a href="/inv/add-classification"
-                            class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md">
-                            Add New Classification
-                        </a>
-                    </div>
-
-                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                        <h2 class="text-xl font-bold text-gray-800 mb-3">Inventory Management</h2>
-                        <p class="text-gray-600 mb-4">Add new vehicles to your inventory with detailed information.</p>
-                        <a href="/inv/add-inventory"
-                            class="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200 shadow-md">
-                            Add New Inventory Vehicle
-                        </a>
-                    </div>
-
-                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-300">
-                        <h3 class="font-bold text-gray-700 mb-2">Quick Navigation</h3>
-                        <ul class="list-disc list-inside text-gray-600 space-y-1">
-                            <li>Use "Add New Classification" to create vehicle categories</li>
-                            <li>Use "Add New Inventory Vehicle" to add specific vehicles</li>
-                            <li>New classifications will appear in the navigation automatically</li>
-                        </ul>
-                    </div>
-                </div>
-    </div>
+<ul class="boldList">
+<li><a href="/inv/newClassification/" title="Click to add a new vehicle classification">Add New Classification</a></li>
+<li><a href="/inv/newVehicle/" title="Click to add a new vehicle">Add New Vehicle</a></li>
+</ul>

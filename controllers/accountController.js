@@ -1,15 +1,37 @@
-const utilities = require("../utilities/")
-const accountModel = require("../models/account-model") 
-const { validationResult } = require("express-validator")
+/* ************************************
+ *  Account Controller
+ *  Unit 4, deliver login view activity
+ *  ******************************** */
+const utilities = require('../utilities')
+const accountModel = require('../models/account-model')
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
+
 
 /* ****************************************
-* Deliver login view
+*  Deliver login view
+*  Unit 4, deliver login view activity
 * *************************************** */
 async function buildLogin(req, res, next) {
   let nav = await utilities.getNav()
-  res.render("account/login", {
+  res.render("./account/login", {
     title: "Login",
     nav,
+  })
+}
+
+
+/* ****************************************
+*  Deliver registration view
+*  Unit 4, deliver register view activity
+* *************************************** */
+async function buildRegister(req, res, next) {
+  let nav = await utilities.getNav()
+  res.render("./account/register", {
+    title: "Register",
+    nav,
+    errors: null,
   })
 }
 
@@ -17,59 +39,49 @@ async function buildLogin(req, res, next) {
 *  Process Registration
 * *************************************** */
 async function registerAccount(req, res) {
-  let nav = await utilities.getNav()
-  const errors = validationResult(req)
+    let nav = await utilities.getNav()
+    const { account_firstname, account_lastname, account_email, account_password } = req.body
+
+    // Hash the password before storing
+    let hashedPassword
+    try {
+        // regular password and cost (salt is generated automatically)
+        hashedPassword = await bcrypt.hashSync(account_password, 10)
+    } catch (error) {
+        req.flash("notice", 'Sorry, there was an error processing the registration.')
+        res.status(500).render("./account/register", {
+            title: "Registration",
+            nav,
+            errors: null
+        })
+    }
   
-  if (errors.isEmpty())
-    {const { account_firstname, account_lastname, account_email, account_password } = req.body
-
-  const regResult = await accountModel.registerAccount(
-    account_firstname,
-    account_lastname,
-    account_email,
-    account_password
-  )
-
-  if (regResult) {
-    req.flash(
-      "notice",
-      `Congratulations, you\'re registered ${account_firstname}. Please log in.`
+    const regResult = await accountModel.registerAccount(
+        account_firstname,
+        account_lastname,
+        account_email,
+        hashedPassword
     )
-    res.status(201).render("account/login", {
-      title: "Login",
-      nav,
-    })
-  } else {
-    req.flash("notice", "Sorry, the registration failed.")
-    res.status(501).render("account/register", {
-      title: "Registration",
-      nav,
-      errors: null
-    })
-  }
-  } else { // RENDER REGISTRATION VIEW WITH ERRORS AND INPUTS
-    res.render("account/register", {
-      errors: errors.array(), // Pass errors array to view
-      title: "Registration",
-      nav,
-      // Retain the user's input values
-      account_firstname: req.body.account_firstname,
-      account_lastname: req.body.account_lastname,
-      account_email: req.body.account_email,
-    })
-  }
+
+    if (regResult) {
+        req.flash(
+            "notice",
+            `Congratulations, you\'re registered, ${account_firstname}. Please log in.`
+        )
+        res.status(201).render("./account/login", {
+            title: "Login",
+            nav,
+            errors: null
+        })
+    } else {
+        req.flash("notice", "Sorry, the registration failed.")
+        res.status(501).render("./account/register", {
+            title: "Registration",
+            nav,
+            errors: null
+        })
+    }
 }
 
-/* ****************************************
-* Deliver registration view
-* *************************************** */
-async function buildRegister(req, res, next) {
-  let nav = await utilities.getNav()
-  res.render("account/register", {
-    title: "Register",
-    nav,
-    errors: null
-  })
-}
 
-module.exports = { buildLogin, buildRegister, registerAccount }
+module.exports = { buildLogin,buildRegister,registerAccount }

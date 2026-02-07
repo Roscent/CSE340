@@ -1,7 +1,13 @@
+/* ***************************
+ *  Account model
+ *  Unit 4, Process Registration Activity
+ * ************************** */
+
 const pool = require("../database/")
 
 /* *****************************
 *   Register new account
+ *  Unit 4, Process Registration Activity
 * *************************** */
 async function registerAccount(account_firstname, account_lastname, account_email, account_password){
   try {
@@ -11,3 +17,18 @@ async function registerAccount(account_firstname, account_lastname, account_emai
     return error.message
   }
 }
+
+/* **********************
+ *  Check for existing email
+ *  Unit 4, Stickiness Activity
+ * ********************* */
+async function checkExistingEmail(account_email){
+  try {
+    const sql = "SELECT * FROM account WHERE account_email = $1"
+    const email = await pool.query(sql, [account_email])
+    return email.rowCount
+  } catch (error) {
+    return error.message
+  }
+}
+module.exports = { registerAccount, checkExistingEmail }
