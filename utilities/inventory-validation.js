@@ -1,9 +1,14 @@
+/* ***********************************
+ * Created in Unit 4
+ * Modified in Unit 5
+ *********************************** */
 const utilities = require(".")
 const { body, validationResult } = require("express-validator")
 const validate = {}
 
-/* **********************************
- * Classification Data Validation Rules
+/*  **********************************
+ *  Classification Data Validation Rule
+ *  Assignment 4, Task 2
  * ********************************* */
 validate.classificationRule = () => {
   return [
@@ -16,9 +21,9 @@ validate.classificationRule = () => {
   ]
 }
 
-
 /* ******************************
- * Check data for new classification and return errors or continue
+ * Check and return error or continue to insert classification
+ *  Assignment 4, Task 2
  * ***************************** */
 validate.checkClassificationData = async (req, res, next) => {
   const { classification_name } = req.body
@@ -37,8 +42,9 @@ validate.checkClassificationData = async (req, res, next) => {
   next()
 }
 
-/* **********************************
- * Inventory Data Validation Rules
+/*  **********************************
+ *  New Vehicle Data Validation Rules
+ *  Assignment 4, Task 3
  * ********************************* */
 validate.newInventoryRules = () => {
   return [
@@ -120,7 +126,8 @@ validate.newInventoryRules = () => {
 }
 
 /* ******************************
- * Check data for new inventory and return errors or continue
+ *  Check data and return errors or continue to new vehicle
+ *  Assignment 4, Task 3
  * ***************************** */
 validate.checkInventoryData = async (req, res, next) => {
   const {
@@ -135,13 +142,16 @@ validate.checkInventoryData = async (req, res, next) => {
     inv_color,
     classification_id,
   } = req.body
-  let errors = validationResult(req)
+  let errors = []
+  errors = validationResult(req)
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav()
-    const classificationSelect = await utilities.buildClassificationList(classification_id)
+    const classificationSelect = await utilities.buildClassificationList(
+      classification_id
+    )
     res.render("inventory/add-inventory", {
       errors,
-      title: "Add New Vehicle",
+      title: "Add Vehicle",
       nav,
       classificationSelect,
       inv_make,
@@ -161,6 +171,7 @@ validate.checkInventoryData = async (req, res, next) => {
 
 /* ******************************
  *  Check update data and return errors or continue to edit view
+ *  Unit 5, Update Step 2 activity
  * ***************************** */
 validate.checkUpdateData = async (req, res, next) => {
   const {
