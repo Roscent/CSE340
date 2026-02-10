@@ -26,7 +26,7 @@ router.get("/",utilities.handleErrors(invController.buildManagement))
 /* ****************************************
  * Build add-classification View Route utilities.checkAccountType
  **************************************** */
-router.get("/newClassification", utilities.handleErrors(invController.newClassification))
+router.get("/newClassification", utilities.handleErrors(invController.buildAddClassification))
 
 /* ****************************************
  * Process add-classification Route utilities.checkAccountType
@@ -36,7 +36,7 @@ router.post("/addClassification", invChecks.classificationRule(), invChecks.chec
 /* ****************************************
  * Build add-vehicle View Route utilities.checkAccountType
  **************************************** */
-router.get("/newVehicle",utilities.handleErrors(invController.newInventory))
+router.get("/newVehicle",utilities.handleErrors(invController.newInventoryView))
 
 /* ****************************************
  * Process add-vehicle Route utilities.checkAccountType
