@@ -119,7 +119,7 @@ invCont.addClassification = async function (req, res, next) {
  *  Deliver Add Inventory View
  *  Assignment 4, Task 3
  * ************************************ */
-invCont.buildAddInventory = async function (req, res, next) {
+invCont.newInventoryView = async function (req, res, next) {
   let nav = await utilities.getNav()
   let classificationList = await utilities.buildClassificationList()
   

@@ -57,6 +57,8 @@ async function addClassification(classification_name) {
  *  Register new inventory item
  * ************************** */
 async function addInventory(
+  
+  classification_id,
   inv_make,
   inv_model,
   inv_description,
@@ -65,8 +67,7 @@ async function addInventory(
   inv_price,
   inv_year,
   inv_miles,
-  inv_color,
-  classification_id
+  inv_color
 ) {
   try {
     const sql = `
@@ -78,6 +79,8 @@ async function addInventory(
       RETURNING *
     `
     const data = await pool.query(sql, [
+      
+      classification_id,
       inv_make,
       inv_model,
       inv_description,
@@ -86,8 +89,7 @@ async function addInventory(
       inv_price,
       inv_year,
       inv_miles,
-      inv_color,
-      classification_id
+      inv_color
     ])
     return data.rows[0]
   } catch (error) {
