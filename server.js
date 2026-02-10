@@ -23,7 +23,6 @@ const cookieParser = require("cookie-parser")
  * Middleware
  * Between the request and response
  * ************************/
-// Unit 4, Sessions & Messages Activity
 app.use(
   session({
     store: new (require("connect-pg-simple")(session))({
@@ -36,14 +35,14 @@ app.use(
     name: "sessionId",
   })
 )
-// Unit 4, Sessions & Messages Activity
+// Sessions & Messages Activity
 // Express Messages Middleware
 app.use(require("connect-flash")())
 app.use(function (req, res, next) {
   res.locals.messages = require("express-messages")(req, res)
   next()
 })
-// Unit 4, Process Registration Activity
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
@@ -55,11 +54,9 @@ app.use(function(req, res, next){
   next()
 })
 
-// Unit 4, Process Registration Activity
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
-// Unit 5 Authentication cookie use
 app.use(cookieParser())
 
 /* ***********************
@@ -73,18 +70,16 @@ app.set("layout", "./layouts/layout") // not at views root
  * Routes
  *************************/
 app.use(static)
-// Index route - Unit 3, Robust Error Handling activity
+
 app.get("/", utilities.handleErrors(baseController.buildHome))
-// Inventory routes - Unit 3, Build Inventory route activity
+
 app.use("/inv", inventoryRoute)
-// Account routes - Unit 4, Deliver Login activity
+
 app.use("/account", accountRoute)
 
-// File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
-
 
 /* ***********************
 * Express Error Handler
@@ -107,7 +102,6 @@ app.use(async (err, req, res, next) => {
 
 /* ***********************
  * Local Server Information
- * Values from .env (environment) file
  *************************/
 const port = process.env.PORT
 const host = process.env.HOST
