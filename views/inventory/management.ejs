@@ -23,3 +23,17 @@
                                     New Classification</a></li>
                             <li><a href="/inv/newVehicle/" title="Click to add a new vehicle">Add New Vehicle</a></li>
                         </ul>
+                        <hr>
+                        <h2>Manage Inventory</h2>
+                        <p>Select a classification from the list to see the items belonging to that classification.</p>
+                        
+                        <div id="classificationSelectContainer">
+                            <%- classificationSelect %>
+                        </div>
+                        
+                        <table id="inventoryDisplay"></table>
+                        
+                        <noscript>
+                            <p>JavaScript must be enabled to use this page.</p>
+                        </noscript>
+                        <script src="/js/inventory.js"></script>

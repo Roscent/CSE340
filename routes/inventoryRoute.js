@@ -83,4 +83,13 @@ router.post(
   utilities.handleErrors(invController.addInventory)
 )
 
+// Route to handle AJAX request for inventory items by classification
+router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
+
+/* ******************************
+ * Deliver Edit Inventory View
+ * **************************** */
+router.get("/edit/:inv_id", utilities.handleErrors(invController.editInventoryView));
+router.post("/update/", invController.updateInventory)
+
 module.exports = router;

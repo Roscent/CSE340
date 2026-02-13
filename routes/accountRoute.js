@@ -21,14 +21,12 @@ router.get("/login", utilities.handleErrors(accountController.buildLogin))
  *  ******************************** */
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
 
-
 router.post(
   "/register",
   regValidate.registationRules(),
   regValidate.checkRegData,
   utilities.handleErrors(accountController.registerAccount)
 )
-
 
 /* ************************************
  *  Process Login
@@ -42,5 +40,16 @@ router.post(
   regValidate.checkLoginData,
   utilities.handleErrors(accountController.accountLogin)
 )
+
+/* ************************************
+ *  Account Management View
+ *  Unit 5, Login Process Activity
+ *  ******************************** */
+// Default route for account management
+router.get("/", utilities.handleErrors(accountController.buildManagementView))
+
+router.get("/update/:account_id", utilities.handleErrors(accountController.buildAccountUpdate))
+router.post("/update-info", regValidate.updateAccountRules(), regValidate.checkUpdateData, utilities.handleErrors(accountController.updateAccount))
+router.post("/update-password", regValidate.passwordRules(), regValidate.checkUpdateData, utilities.handleErrors(accountController.updatePassword))
 
 module.exports = router
