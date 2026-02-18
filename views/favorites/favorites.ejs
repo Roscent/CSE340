@@ -1,0 +1,41 @@
+<% if (title) { %>
+    <h1>
+        <%= title %>
+    </h1>
+    <% } else { res.redirect('/') } %>
+
+        <%- messages() %>
+
+            <% if (favorites && favorites.length> 0) { %>
+                <div class="favorites-grid">
+                    <% favorites.forEach(item=> { %>
+                        <div class="favorite-card" data-inv-id="<%= item.inv_id %>">
+                            <div class="favorite-image">
+                                <img src="<%= item.inv_thumbnail %>" alt="<%= item.inv_make %> <%= item.inv_model %>">
+                            </div>
+                            <div class="favorite-details">
+                                <h3>
+                                    <%= item.inv_make %>
+                                        <%= item.inv_model %>
+                                            <%= item.inv_year %>
+                                </h3>
+                                <p class="price">$<%= new Intl.NumberFormat('en-US').format(item.inv_price) %>
+                                </p>
+                                <div class="favorite-actions">
+                                    <button class="btn-add-to-cart" data-inv-id="<%= item.inv_id %>">Add to
+                                        Cart</button>
+                                    <button class="btn-remove-favorite" data-inv-id="<%= item.inv_id %>">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+                <% } else { %>
+                    <div class="empty-favorites">
+                        <h2>Your favorites list is empty</h2>
+                        <p>Browse our inventory and add items to your favorites!</p>
+                        <a href="/inv/" class="btn">Browse Inventory</a>
+                    </div>
+                    <% } %>
+
+                        <script src="/js/favorites.js"></script>

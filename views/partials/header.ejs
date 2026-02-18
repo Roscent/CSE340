@@ -4,10 +4,22 @@
     </span>
     <div id="tools">
         <% if (locals.loggedin) { %>
-            <a href="/account/">Welcome <%= locals.accountData.account_firstname %></a>
-            <a title="Logout" href="/account/logout">Logout</a>
+            <a href="/account/" class="acc" title="My Account">Welcome <%= locals.accountData.account_firstname %></a>
+            <a href="/favorites/" title="My Favorites" class="favorites-link">
+                <span>❤️</span> Favorites
+                <span id="favorites-count" class="badge">
+                    <%= locals.favoritesCount || 0 %>
+                </span>
+            </a>
+            <a href="/cart/" title="Shopping Cart" class="cart-link">
+                <span>🛒</span> Cart
+                <span id="cart-count" class="badge">
+                    <%= locals.cartCount || 0 %>
+                </span>
+            </a>
+            <a href="/account/logout" title="Logout">Logout</a>
             <% } else { %>
-                <a title="Click to log in" href="/account/login">My Account</a>
+                <a href="/account/login" title="Click to log in">My Account</a>
                 <% } %>
     </div>
 </header>

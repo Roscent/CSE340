@@ -18,6 +18,8 @@ const session = require("express-session")
 const pool = require('./database/')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
+const cartRoute = require("./routes/cartRoute");
+const favoritesRoute = require("./routes/favoritesRoute");
 
 /* ***********************
  * Middleware
@@ -54,6 +56,10 @@ app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
+app.use((req, res, next) => {
+  res.locals.currentUrl = req.url;
+  next();
+});
 
 // Unit 4, Process Registration Activity
 app.use(bodyParser.json())
@@ -73,9 +79,6 @@ app.use(expressLayouts)
 app.set("layout", "./layouts/layout") // not at views root
 
 
-
-
-
 /* ***********************
  * Routes
  *************************/
@@ -86,13 +89,16 @@ app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", inventoryRoute)
 // Account routes - Unit 4, Deliver Login activity
 app.use("/account", accountRoute)
-
+// Cart routes
+app.use("/cart", cartRoute);
+// Favorites routes
+app.use("/favorites", favoritesRoute);
 
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
-})
+});
 
 
 /* ***********************
@@ -102,15 +108,13 @@ app.use(async (req, res, next) => {
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if (err.status == 404) {
-    message = err.message
-  } else {
-    message = "Oh no! There was a crash. Maybe try a different route?"
-  }
-  res.render("errors/error", {
+  let message = err.status == 404 ? err.message : "Oh no! There was a crash. Maybe try a different route?"
+  
+  res.status(err.status || 500).render("errors/error", {
     title: err.status || "Server Error",
     message,
     nav,
+    layout: "./layouts/layout"
   })
 })
 

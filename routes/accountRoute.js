@@ -48,11 +48,7 @@ router.post(
  *  Deliver Account Management View
  *  Unit 5, JWT Authorization activity
  *  ******************************** */
-router.get(
-  "/",
-  utilities.checkLogin,
-  utilities.handleErrors(accountController.buildManagement)
-)
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildManagement))
 
 
 /* ****************************************

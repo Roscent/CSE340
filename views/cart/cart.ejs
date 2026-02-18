@@ -1,0 +1,75 @@
+<% if (title) { %>
+    <h1>
+        <%= title %>
+    </h1>
+    <% } else { res.redirect('/') } %>
+
+        <%- messages() %>
+
+            <% if (cartItems && cartItems.length> 0) { %>
+                <div class="cart-container">
+                    <div class="cart-items">
+                        <table class="cart-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% cartItems.forEach(item=> { %>
+                                    <tr>
+                                        <td>
+                                            <div class="product-info">
+                                                <img src="<%= item.inv_thumbnail %>"
+                                                    alt="<%= item.inv_make %> <%= item.inv_model %>"
+                                                    class="product-thumbnail">
+                                                <span>
+                                                    <%= item.inv_make %>
+                                                        <%= item.inv_model %>
+                                                            <%= item.inv_year %>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>$<%= new Intl.NumberFormat('en-US').format(item.inv_price) %>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="quantity-input"
+                                                data-cart-id="<%= item.cart_id %>" value="<%= item.quantity %>" min="1">
+                                        </td>
+                                        <td>$<%= new Intl.NumberFormat('en-US').format(item.subtotal) %>
+                                        </td>
+                                        <td>
+                                            <button class="btn-remove"
+                                                data-cart-id="<%= item.cart_id %>">Remove</button>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="cart-summary">
+                        <h2>Order Summary</h2>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span>$<%= new Intl.NumberFormat('en-US').format(cartTotal) %></span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span>$<%= new Intl.NumberFormat('en-US').format(cartTotal) %></span>
+                        </div>
+                        <button class="btn-checkout">Checkout</button>
+                        <button class="btn-clear">Clear Cart</button>
+                    </div>
+                </div>
+                <% } else { %>
+                    <div class="empty-cart">
+                        <h2>Your cart is empty</h2>
+                        <p>Browse our inventory and add items to your cart!</p>
+                        <a href="/inv/" class="btn">Browse Inventory</a>
+                    </div>
+                    <% } %>
+<script src="/js/cart.js"></script>

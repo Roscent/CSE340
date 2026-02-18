@@ -1,6 +1,8 @@
 const invModel = require("../models/inventory-model")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
+const cartModel = require("../models/cart-model");
+const favoritesModel = require("../models/favorites-model");
 const Util = {}
 
 /* ************************
@@ -50,8 +52,12 @@ Util.buildClassificationGrid = async function (data) {
             grid += '<span>$'
                 + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
             grid += '</div>'
+            grid += '<div class="actions">'
+            grid += `<button class="btn-add-to-cart" data-inv-id="${vehicle.inv_id}">Add to Cart</button>`
+            grid += `<button class="btn-favorite" data-inv-id="${vehicle.inv_id}">Add to favorite</button>`
+            grid += '</div>'
             grid += '</li>'
-        })
+            })
         grid += '</ul>'
     } else {
         grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
@@ -101,6 +107,10 @@ Util.buildSingleVehicleDisplay = async function (data) {
         new Intl.NumberFormat("en-US").format(data.inv_miles) +
         "</li>"
     grid += "</ul>"
+    grid += '<div class="detail-actions">'
+    grid += '<button class="btn-add-to-cart-large" data-inv-id="' + data.inv_id + '">Add to Cart</button>'
+    grid += '<button class="btn-add-to-favorite-large" data-inv-id="' + data.inv_id + '">Add to Favorites</button>'
+    grid += '</div>'
     grid += "</section>"
     grid += `</div>`
     return grid
@@ -122,7 +132,7 @@ Util.checkJWTToken = (req, res, next) => {
     jwt.verify(
       req.cookies.jwt,
       process.env.ACCESS_TOKEN_SECRET,
-      function (err, accountData) {
+      async function (err, accountData) {
         if (err) {
           req.flash("notice", "Please log in")
           res.clearCookie("jwt")
@@ -130,12 +140,24 @@ Util.checkJWTToken = (req, res, next) => {
         }
       res.locals.accountData = accountData
       res.locals.loggedin = 1
+      try {
+            const cartCount = await cartModel.getCartCount(accountData.account_id);
+            const favoritesCount = await favoritesModel.getFavoritesCount(accountData.account_id);
+            res.locals.cartCount = cartCount;
+            res.locals.favoritesCount = favoritesCount;
+          } catch (error) {
+            console.error("Error getting counts:", error);
+            res.locals.cartCount = 0;
+            res.locals.favoritesCount = 0;
+          }
       next()
       })
   } else {
+    res.locals.cartCount = 0;
+    res.locals.favoritesCount = 0;
     next()
   }
-}
+};
 
 /* ****************************************
  *  Check Login
@@ -169,7 +191,24 @@ Util.checkAccountType = (req, res, next) => {
     }
 }
 
+Util.getCartCount = async function(account_id) {
+    if (!account_id) return 0;
+    try {
+        return await cartModel.getCartCount(account_id);
+    } catch (error) {
+        console.error("Error getting cart count:", error);
+        return 0;
+    }
+};
 
-
+Util.getFavoritesCount = async function(account_id) {
+    if (!account_id) return 0;
+    try {
+        return await favoritesModel.getFavoritesCount(account_id);
+    } catch (error) {
+        console.error("Error getting favorites count:", error);
+        return 0;
+    }
+};
 
 module.exports = Util

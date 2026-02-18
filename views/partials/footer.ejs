@@ -1,10 +1,19 @@
-<% const d=new Date(); let year=d.getFullYear() %>
+<% const currentYear=new Date().getFullYear(); %>
 
     <footer id="site-footer">
-        <p>&copy; 2025 CSE Motors.</p>
-        <p> All rights reserved.</p>
+        <p>&copy; <span id="currentyear">
+                <%= currentYear %>
+            </span> CSE Motors.</p>
+        <p>All rights reserved.</p>
         <p>All images used are for illustrative purposes.</p>
         <p>Roscent Nkemjika Ofuonye CSE 340 App</p>
 
+        <p id="lastModified"></p>
+
         <p><a href="/inv/broken" title="Will trigger intentional exception">Error Link</a></p>
     </footer>
+
+    <script>
+        // Updates the last modified date on the client side
+        document.getElementById('lastModified').textContent = `Last Modified: ${document.lastModified}`;
+    </script>
